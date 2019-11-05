@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import FilmListing from './FilmListing';
-import FilmDetails from './FilmDetails';
+import FilmListing from './Components/FilmListing';
+import FilmDetails from './Components/FilmDetails';
 import TMDB from './TMDB';
 
 class App extends Component {

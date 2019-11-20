@@ -8,6 +8,7 @@ class FilmListing extends Component {
       filter: "all"
     })
   }
+
   handleFilterClick(str){
     this.setState(prevState => ({
       filter: str
@@ -34,20 +35,19 @@ class FilmListing extends Component {
     const all = this.state.filter === "all" ? "is-active" : "";
     const faves = this.state.filter === "faves" ? "is-active" : "";
     return(
-      
-        <div className="film-list">
-          <div onClick={()=> this.handleFilterClick('all')}
+      <div className="film-list">
+        <div onClick={()=> this.handleFilterClick('all')}
           className={`film-list-filter ${all}`}>
-            ALL
-            <span className="section-count">{this.props.films.length}</span>
-          </div>
-          <div onClick={()=> this.handleFilterClick('faves')} className={`film-list-filter ${faves}`}>
-            FAVES
-            <span className="section-count">{this.props.faves.length}</span>
-          </div>
-            <h1 className="section-title">FILMS</h1>
-              {this.filterFilmListing(this.state.filter)}
+          ALL
+          <span className="section-count">{this.props.films.length}</span>
         </div>
+        <div onClick={()=> this.handleFilterClick('faves')} className={`film-list-filter ${faves}`}>
+          FAVES
+          <span className="section-count">{this.props.faves.length}</span>
+        </div>
+          <h1 className="section-title">FILMS</h1>
+            {this.filterFilmListing(this.state.filter)}
+      </div>
     );
   }
 }

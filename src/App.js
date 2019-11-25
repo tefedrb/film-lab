@@ -10,20 +10,19 @@ class App extends Component {
       // Need to return each object from
       films: TMDB.films,
       faves: [],
-      playing: null,
+      playing: [],
       current: {}
     }
   }
 
-  handleNowPlayingToggle = (film) => {
+  handleNowPlaying = () => {
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}`
     fetch(url)
+    .then(res => res.json())
     .then(res => {
-      res.json()
-    })
-    .then(res => {
-      console.log(res)
-      this.state.playing = res;
+      this.setState({
+        playing: res.results
+      })
     })
   }
 
@@ -64,7 +63,7 @@ class App extends Component {
           films={this.state.films} 
           faves={this.state.faves} 
           onFaveToggle={this.handleFaveToggle}
-          handleNowPlaying={this.handleNowPlayingToggle}
+          handleNowPlaying={this.handleNowPlaying}
           playing={this.state.playing}
           />
         <FilmDetails film={this.state.current}/>

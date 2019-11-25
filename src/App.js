@@ -10,8 +10,21 @@ class App extends Component {
       // Need to return each object from
       films: TMDB.films,
       faves: [],
+      playing: null,
       current: {}
     }
+  }
+
+  handleNowPlayingToggle = (film) => {
+    const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}`
+    fetch(url)
+    .then(res => {
+      res.json()
+    })
+    .then(res => {
+      console.log(res)
+      this.state.playing = res;
+    })
   }
 
   handleFaveToggle = (film) => {
@@ -21,7 +34,6 @@ class App extends Component {
     if(filmIndex < 0){
       console.log(`Adding ${film.title} to faves...`);
       faves.push(film);
-
     } else {
       console.log(`Removing ${film.title} from faves...`);
       faves.splice(filmIndex, 1);
@@ -31,7 +43,8 @@ class App extends Component {
 
   handleDetailsClick = (film) => {
     const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`
-    fetch(url).then(res => {
+    fetch(url)
+    .then(res => {
       res.json()
       .then(data => {
         console.log(data)
@@ -47,7 +60,13 @@ class App extends Component {
   render() {
     return (
       <div className="film-library">
-        <FilmListing details={this.handleDetailsClick} films={this.state.films} faves={this.state.faves} onFaveToggle={this.handleFaveToggle}/>
+        <FilmListing details={this.handleDetailsClick} 
+          films={this.state.films} 
+          faves={this.state.faves} 
+          onFaveToggle={this.handleFaveToggle}
+          handleNowPlaying={this.handleNowPlayingToggle}
+          playing={this.state.playing}
+          />
         <FilmDetails film={this.state.current}/>
       </div>
     );

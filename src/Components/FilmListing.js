@@ -18,6 +18,7 @@ class FilmListing extends Component {
 
   filterFilmListing(filter){
     filter === "all" ? filter = this.props.films :
+    filter === "inTheaters" ? filter = this.props.playing : 
     filter = this.props.faves
     return filter.map((film) => {
       return <FilmRow

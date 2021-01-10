@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import FilmRow from './FilmRow';
+import TMDB from '../TMDB';
 
 class FilmListing extends Component {
   constructor(props){
     super(props);
     this.state = ({
-      filter: "all"
+      filter: "popular",
+      list: []
     })
   }
 
@@ -13,12 +15,15 @@ class FilmListing extends Component {
     this.setState({
       filter: str
     })
+    this.state.filter !== "inTheaters" ? this.filterFilmListing(this.state.filter) : this.nowPlaying()
     console.log(`setting filter to ${str}`)
   }
 
   filterFilmListing = (filter) =>{
-    if(filter === "all"){
-      filter = this.props.films
+    if(filter === "popular"){
+      // call method in app that makes a call to api
+      filter = this.state.list
+      console.log(filter, "filter")
     } else {
       filter = this.props.faves
     }
@@ -48,14 +53,26 @@ class FilmListing extends Component {
     )
   }
 
+  renderPopular = () => {
+    this.props.getPopularFilms();
+    return this.props.popular.map(film => 
+      <FilmRow film={film}
+        key={film.id}
+        onFaveToggle={()=> this.props.onFaveToggle(film)}
+        isFave={this.props.faves.includes(film)}
+        details={this.props.details}
+      />  
+    )
+  }
+
   render(){
-    const all = this.state.filter === "all" ? "is-active" : "";
+    const popular = this.state.filter === "popular" ? "is-active" : "";
     const faves = this.state.filter === "faves" ? "is-active" : "";
     return(
       <div className="film-list">
-        <div onClick={()=> this.handleFilterClick('all')}
-          className={`film-list-filter ${all}`}>
-          ALL
+        <div onClick={this.getPopularFilms}
+          className={`film-list-filter ${popular}`}>
+          POPULAR
           <span className="section-count">{this.props.films.length}</span>
         </div>
         <div onClick={()=> this.handleFilterClick('faves')} className={`film-list-filter ${faves}`}>
@@ -67,7 +84,7 @@ class FilmListing extends Component {
           <span className="section-count">{this.props.playing.length}</span>
         </div>
           <h1 className="section-title">FILMS</h1>
-            {this.state.filter !== "inTheaters" ? this.filterFilmListing(this.state.filter) : this.nowPlaying()}
+            {this.state.filter !== "inTheaters" ? this.filterFilmListing(this.state.filter) : this.state.filter === "popular" ? this.renderPopular() : this.nowPlaying()}
       </div>
     );
   }

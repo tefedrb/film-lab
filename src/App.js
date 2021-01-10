@@ -3,17 +3,17 @@ import FilmListing from './Components/FilmListing';
 import FilmDetails from './Components/FilmDetails';
 import TMDB from './TMDB';
 
-
 /* TODO:
   1.9.21 - Working on a Top 25 component
-
+  We want to have "allFilms" update from the our API - we should cache the items
+  so that we don't make continuous calls.
 */
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       // Need to return each object from
-      films: TMDB.films,
+      allFilms: TMDB.films,
       faves: [],
       playing: [],
       current: {}
@@ -64,8 +64,9 @@ class App extends Component {
   render() {
     return (
       <div className="film-library">
-        <FilmListing details={this.handleDetailsClick} 
-          films={this.state.films} 
+        <FilmListing 
+          details={this.handleDetailsClick} 
+          films={this.state.allFilms} 
           faves={this.state.faves} 
           onFaveToggle={this.handleFaveToggle}
           handleNowPlaying={this.handleNowPlaying}

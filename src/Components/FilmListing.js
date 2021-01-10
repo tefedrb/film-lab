@@ -10,9 +10,9 @@ class FilmListing extends Component {
   }
 
   handleFilterClick(str){
-    this.setState(prevState => ({
+    this.setState({
       filter: str
-    }))
+    })
     console.log(`setting filter to ${str}`)
   }
 
@@ -22,15 +22,14 @@ class FilmListing extends Component {
     } else {
       filter = this.props.faves
     }
-    return filter.map((film) => {
-      return <FilmRow
+    return filter.map((film) => 
+      <FilmRow
         film={film}
         key={film.id}
         onFaveToggle={()=> this.props.onFaveToggle(film)}
         isFave={this.props.faves.includes(film)}
         details={this.props.details}
-        />
-      }
+      /> 
     )
   }
 
@@ -39,14 +38,14 @@ class FilmListing extends Component {
       this.props.handleNowPlaying()
       console.log("here")
     }
-    return this.props.playing.map((film) => {
-      return <FilmRow film={film}
+    return this.props.playing.map((film) => 
+      <FilmRow film={film}
         key={film.id}
         onFaveToggle={()=> this.props.onFaveToggle(film)}
         isFave={this.props.faves.includes(film)}
         details={this.props.details}
-        />
-    })
+      />
+    )
   }
 
   render(){

@@ -3,6 +3,11 @@ import FilmListing from './Components/FilmListing';
 import FilmDetails from './Components/FilmDetails';
 import TMDB from './TMDB';
 
+
+/* TODO:
+  1.9.21 - Working on a Top 25 component
+
+*/
 class App extends Component {
   constructor(props){
     super(props);
@@ -46,7 +51,7 @@ class App extends Component {
     .then(res => {
       res.json()
       .then(data => {
-        console.log(data)
+        console.log(data, "<-- data")
         this.setState({current: data})
       })
     })
@@ -65,7 +70,7 @@ class App extends Component {
           onFaveToggle={this.handleFaveToggle}
           handleNowPlaying={this.handleNowPlaying}
           playing={this.state.playing}
-          />
+        />
         <FilmDetails film={this.state.current}/>
       </div>
     );

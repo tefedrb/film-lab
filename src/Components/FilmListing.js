@@ -15,18 +15,13 @@ class FilmListing extends Component {
     this.setState({
       filter: str
     })
-    this.state.filter !== "inTheaters" ? this.filterFilmListing(this.state.filter) : this.nowPlaying()
     console.log(`setting filter to ${str}`)
   }
 
-  filterFilmListing = (filter) =>{
-    if(filter === "popular"){
-      // call method in app that makes a call to api
-      filter = this.state.list
-      console.log(filter, "filter")
-    } else {
-      filter = this.props.faves
-    }
+  filterFilmListing = (filter) => {
+    if(filter === "popular" || filter === "inTheaters") return this.apiCall()
+    filter = this.props.faves;
+    console.log(this.props.faves, "faves")
     return filter.map((film) => 
       <FilmRow
         film={film}
@@ -38,12 +33,14 @@ class FilmListing extends Component {
     )
   }
 
-  nowPlaying = () => {
-    if(this.props.playing.length < 1){
+  apiCall = () => {
+    if(this.props.playing.length < 1 && this.state.filter === "inTheaters"){
       this.props.handleNowPlaying()
-      console.log("here")
+    } else if (this.props.popular.length < 1 && this.state.filter === "popular"){
+      this.props.getPopularFilms()
     }
-    return this.props.playing.map((film) => 
+    const films = this.state.filter === "inTheaters" ? this.props.playing : this.props.popular;
+    return films.map((film) => 
       <FilmRow film={film}
         key={film.id}
         onFaveToggle={()=> this.props.onFaveToggle(film)}
@@ -53,27 +50,15 @@ class FilmListing extends Component {
     )
   }
 
-  renderPopular = () => {
-    this.props.getPopularFilms();
-    return this.props.popular.map(film => 
-      <FilmRow film={film}
-        key={film.id}
-        onFaveToggle={()=> this.props.onFaveToggle(film)}
-        isFave={this.props.faves.includes(film)}
-        details={this.props.details}
-      />  
-    )
-  }
-
   render(){
     const popular = this.state.filter === "popular" ? "is-active" : "";
     const faves = this.state.filter === "faves" ? "is-active" : "";
     return(
       <div className="film-list">
-        <div onClick={this.getPopularFilms}
+        <div onClick={() => this.handleFilterClick('popular')}
           className={`film-list-filter ${popular}`}>
-          POPULAR
-          <span className="section-count">{this.props.films.length}</span>
+          TOP RATED
+          <span className="section-count">{this.props.popular.length}</span>
         </div>
         <div onClick={()=> this.handleFilterClick('faves')} className={`film-list-filter ${faves}`}>
           FAVES
@@ -84,7 +69,7 @@ class FilmListing extends Component {
           <span className="section-count">{this.props.playing.length}</span>
         </div>
           <h1 className="section-title">FILMS</h1>
-            {this.state.filter !== "inTheaters" ? this.filterFilmListing(this.state.filter) : this.state.filter === "popular" ? this.renderPopular() : this.nowPlaying()}
+            {this.filterFilmListing(this.state.filter)}
       </div>
     );
   }

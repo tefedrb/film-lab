@@ -5,7 +5,7 @@ import Fave from './Fave';
 function FilmRow(props){
   const releaseYear = new Date(props.film.release_date).getFullYear();
   return(
-    <div onClick={()=>props.details(props.film)} className="film-row">
+    <div onClick={()=>props.details(props.film, "row")} className="film-row">
       <FilmPoster poster={props.film.poster_path}/>
       <div className="film-summary">
         <h1>TITLE</h1>

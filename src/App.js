@@ -5,8 +5,7 @@ import TMDB from './TMDB';
 
 /* TODO:
   1.9.21 - Working on a Top 25 component
-  We want to have "allFilms" update from the our API - we should cache the items
-  so that we don't make continuous calls.
+  - Filter top rated so that vote_count is accounted for
 */
 class App extends Component {
   constructor(props){
@@ -16,6 +15,7 @@ class App extends Component {
       allFilms: TMDB.films,
       faves: [],
       playing: [],
+      popular: [],
       current: {}
     }
   }
@@ -24,9 +24,32 @@ class App extends Component {
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB.api_key}`
     fetch(url)
     .then(res => res.json())
+    .then(async res => {
+      // Attach filmdetails to res
+      // const hold = await this.handleDetailsClick(696374);
+      console.log(res, "res")
+      return res
+    })
     .then(res => {
       this.setState({
         playing: res.results
+      })
+    })
+  }
+
+  getFilmDetails = () => {
+
+  }
+
+  getPopularFilms = () => {
+    const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB.api_key}&language=en-US&page=1`
+    fetch(url)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res, "res")
+      console.log(res, "popular")
+      this.setState({
+        popular: res.results
       })
     })
   }
@@ -45,20 +68,16 @@ class App extends Component {
     this.setState({faves})
   }
 
-  handleDetailsClick = (film) => {
+  handleDetailsClick = (film, row = false) => {
     const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`
     fetch(url)
-    .then(res => {
-      res.json()
-      .then(data => {
-        console.log(data, "<-- data")
+    .then(res => res.json())
+    .then(data => {
+      console.log(data, "<-- data")
+      if(row){
         this.setState({current: data})
-      })
+      } else return data;
     })
-    this.setState({
-      current: film
-    })
-    console.log(`Fetching details for ${film}`);
   }
 
   render() {
@@ -71,6 +90,8 @@ class App extends Component {
           onFaveToggle={this.handleFaveToggle}
           handleNowPlaying={this.handleNowPlaying}
           playing={this.state.playing}
+          getPopularFilms={this.getPopularFilms}
+          popular={this.state.popular}
         />
         <FilmDetails film={this.state.current}/>
       </div>

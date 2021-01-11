@@ -15,7 +15,6 @@ class FilmListing extends Component {
     this.setState({
       filter: str
     })
-    console.log(`setting filter to ${str}`)
   }
 
   filterFilmListing = (filter) => {

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import FilmRow from './FilmRow';
-import TMDB from '../TMDB';
 
 class FilmListing extends Component {
   constructor(props){
@@ -21,16 +20,19 @@ class FilmListing extends Component {
     if(filter === "popular" || filter === "inTheaters") return this.apiCall()
     filter = this.props.faves;
     console.log(this.props.faves, "faves")
-    return filter.map((film) => 
-      <FilmRow
-        film={film}
+    return this.returnFilmRows(filter);
+  }
+
+  returnFilmRows = (films) => (
+    films.map(film => (
+      <FilmRow film={film}
         key={film.id}
         onFaveToggle={()=> this.props.onFaveToggle(film)}
         isFave={this.props.faves.includes(film)}
         details={this.props.details}
-      /> 
-    )
-  }
+      />
+    ))
+  )
 
   apiCall = () => {
     if(this.props.playing.length < 1 && this.state.filter === "inTheaters"){
@@ -39,20 +41,13 @@ class FilmListing extends Component {
       this.props.getPopularFilms()
     }
     const films = this.state.filter === "inTheaters" ? this.props.playing : this.props.popular;
-    return films.map((film) => 
-      <FilmRow film={film}
-        key={film.id}
-        onFaveToggle={()=> this.props.onFaveToggle(film)}
-        isFave={this.props.faves.includes(film)}
-        details={this.props.details}
-      />
-    )
+    return this.returnFilmRows(films);
   }
 
   render(){
     const popular = this.state.filter === "popular" ? "is-active" : "";
     const faves = this.state.filter === "faves" ? "is-active" : "";
-    return(
+    return (
       <div className="film-list">
         <div onClick={() => this.handleFilterClick('popular')}
           className={`film-list-filter ${popular}`}>

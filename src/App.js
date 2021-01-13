@@ -56,7 +56,7 @@ class App extends Component {
 
   handleFaveToggle = (film) => {
     const faves = this.state.faves.slice(0);
-    const filmIndex = this.state.faves.indexOf(film);
+    const filmIndex = faves.indexOf(film);
 
     if(filmIndex < 0){
       console.log(`Adding ${film.title} to faves...`);

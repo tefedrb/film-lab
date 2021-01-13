@@ -20,7 +20,7 @@ function FilmDeetsTrue(props){
                 </p>
             </div>
             <div>
-                <div>Language: {spoken_languages.map((lan, key) => <p key={key}>{lan.name}</p>)}</div>
+                <div>Language: {spoken_languages.map((lan, key) => <p key={key}>{lan.english_name}</p>)}</div>
                 <p>Average User Score: {vote_average}</p>
                 <p>Votes: {vote_count}</p>
             </div>

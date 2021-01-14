@@ -4,7 +4,7 @@ import Subscriptions from '@material-ui/icons/Subscriptions';
 function FilmDeetsFalse(){
     return (
         <div className="film-detail">
-          <Subscriptions />
+          <div style={{marginRight: "5px"}}><Subscriptions /></div>
           <span>No film selected!</span>
         </div>
     )

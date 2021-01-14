@@ -1,10 +1,11 @@
 import React from 'react';
 
 function FilmDeetsTrue(props){
-    const {backdrop_path, poster_path, vote_average, vote_count, spoken_languages} = props.film;
+    const {backdrop_path, poster_path, vote_average, vote_count, spoken_languages, genres} = props.film;
     const backdropUrl = `https://image.tmdb.org/t/p/w1280/${backdrop_path}`
     const posterUrl = `https://image.tmdb.org/t/p/w780/${poster_path}`
     console.log(props, "<----- PROPS")
+    // add trailer underneath - use imdb as a reference for organizing movie information
     return (
         <div className="film-detail is-hydrated">
             <figure className="film-backdrop">
@@ -20,7 +21,8 @@ function FilmDeetsTrue(props){
                 </p>
             </div>
             <div>
-                <div>Language: {spoken_languages.map((lan, key) => <p key={key}>{lan.english_name}</p>)}</div>
+                <p>Genre: {genres.map((genre, idx) => idx === genres.length -1 ? `${genre.name} ` : `${genre.name}, `)}</p>
+                <p>Language: {spoken_languages.map(lan => lan.english_name)}</p>
                 <p>Average User Score: {vote_average}</p>
                 <p>Votes: {vote_count}</p>
             </div>
